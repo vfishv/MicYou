@@ -138,15 +138,18 @@ jobs:
         path: ci-artifacts/MicYou-Win-${{ steps.version.outputs.version }}-installer.exe
         if-no-files-found: ignore
 
-  # ----------------- Tauri macOS 构建 (arm64) -----------------
+  # ----------------- Tauri macOS 构建 (arm64 + x86_64) -----------------
   build-tauri-macos:
     strategy:
       fail-fast: false
       matrix:
         include:
           - arch: arm64
-            runner: macos-latest
+            runner: macos-latest        # Apple Silicon runner (aarch64)
             target: aarch64-apple-darwin
+          - arch: x64
+            runner: macos-13            # Intel runner, native x86_64 build
+            target: x86_64-apple-darwin
     runs-on: ${{ matrix.runner }}
     steps:
     - uses: actions/checkout@v7
